@@ -21,6 +21,12 @@ public class ProductService {
         return new ProductDTO(product);
     }
 
+    @Transactional(readOnly = true)
+    public Page<ProductDTO> findAll(Pageable pageable){
+        Page<Product> page = repository.findAll(pageable);
+        return page.map(product -> new ProductDTO(product));
+    }
+
     @Transactional
     public ProductDTO insert(ProductDTO dto){
         Product product = new Product();
@@ -33,9 +39,4 @@ public class ProductService {
         return new ProductDTO(product);
     }
 
-    @Transactional(readOnly = true)
-    public Page<ProductDTO> findAll(Pageable pageable){
-        Page<Product> page = repository.findAll(pageable);
-        return page.map(product -> new ProductDTO(product));
-    }
 }

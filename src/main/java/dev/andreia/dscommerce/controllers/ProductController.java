@@ -28,6 +28,11 @@ public class ProductController {
         return ResponseEntity.ok(dto);
     }
 
+    @GetMapping
+    public Page<ProductDTO> findAll(Pageable pageable){
+        return service.findAll(pageable);
+    }
+
     @PostMapping
     public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto){
         dto = service.insert(dto);
@@ -39,8 +44,4 @@ public class ProductController {
         return ResponseEntity.created(uri).body(dto);
     }
 
-    @GetMapping
-    public Page<ProductDTO> findAll(Pageable pageable){
-        return service.findAll(pageable);
-    }
 }
