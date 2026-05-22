@@ -30,8 +30,10 @@ public class ProductController {
     }
 
     @GetMapping
-    public Page<ProductDTO> findAll(Pageable pageable){
-        return service.findAll(pageable);
+    public Page<ProductDTO> findAll(
+            @RequestParam(name = "name", defaultValue = "") String name,
+            Pageable pageable){
+        return service.findAll(name, pageable);
     }
 
     @PostMapping
