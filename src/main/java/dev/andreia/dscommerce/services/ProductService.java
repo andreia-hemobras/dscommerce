@@ -1,6 +1,7 @@
 package dev.andreia.dscommerce.services;
 
 import dev.andreia.dscommerce.dto.ProductDTO;
+import dev.andreia.dscommerce.dto.ProductMinDto;
 import dev.andreia.dscommerce.entities.Product;
 import dev.andreia.dscommerce.repositories.ProductRepository;
 import dev.andreia.dscommerce.services.exceptions.DatabaseException;
@@ -21,16 +22,16 @@ public class ProductService {
     private ProductRepository repository;
 
     @Transactional(readOnly = true)
-    public ProductDTO findById(Long id){
+    public ProductMinDto findById(Long id){
         Product product = repository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Recurso não encontrado"));
-        return new ProductDTO(product);
+        return new ProductMinDto(product);
     }
 
     @Transactional(readOnly = true)
-    public Page<ProductDTO> findAll(String name, Pageable pageable){
+    public Page<ProductMinDto> findAll(String name, Pageable pageable){
         Page<Product> page = repository.searchByName(name, pageable);
-        return page.map(product -> new ProductDTO(product));
+        return page.map(product -> new ProductMinDto(product));
     }
 
     @Transactional

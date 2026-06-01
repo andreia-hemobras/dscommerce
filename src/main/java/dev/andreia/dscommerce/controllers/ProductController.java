@@ -1,6 +1,7 @@
 package dev.andreia.dscommerce.controllers;
 
 import dev.andreia.dscommerce.dto.ProductDTO;
+import dev.andreia.dscommerce.dto.ProductMinDto;
 import dev.andreia.dscommerce.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +26,13 @@ public class ProductController {
     private ProductService service;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ProductDTO> findById(@PathVariable Long id){
-        ProductDTO dto = service.findById(id);
+    public ResponseEntity<ProductMinDto> findById(@PathVariable Long id){
+        ProductMinDto dto = service.findById(id);
         return ResponseEntity.ok(dto);
     }
 
     @GetMapping
-    public Page<ProductDTO> findAll(
+    public Page<ProductMinDto> findAll(
             @RequestParam(name = "name", defaultValue = "") String name,
             Pageable pageable){
         return service.findAll(name, pageable);
