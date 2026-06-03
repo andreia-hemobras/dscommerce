@@ -1,9 +1,14 @@
 package dev.andreia.dscommerce.dto;
 
+import dev.andreia.dscommerce.entities.Category;
 import dev.andreia.dscommerce.entities.Product;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductDTO {
 
@@ -20,6 +25,9 @@ public class ProductDTO {
     @Positive(message = "O preço deve ser positivo")
     private Double price;
     private String imgUrl;
+
+    @NotEmpty
+    private List<CategoryDto> categories = new ArrayList<>();
 
     public ProductDTO() {
     }
@@ -38,6 +46,10 @@ public class ProductDTO {
         description = entity.getDescription();
         price = entity.getPrice();
         imgUrl = entity.getImgUrl();
+
+        for(Category category : entity.getCategories()){
+            categories.add(new CategoryDto(category));
+        }
     }
 
     public Long getId() {
@@ -60,4 +72,7 @@ public class ProductDTO {
         return imgUrl;
     }
 
+    public List<CategoryDto> getCategories() {
+        return categories;
+    }
 }

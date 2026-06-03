@@ -1,8 +1,11 @@
 package dev.andreia.dscommerce.services;
 
+import dev.andreia.dscommerce.dto.CategoryDto;
 import dev.andreia.dscommerce.dto.ProductDTO;
 import dev.andreia.dscommerce.dto.ProductMinDto;
+import dev.andreia.dscommerce.entities.Category;
 import dev.andreia.dscommerce.entities.Product;
+import dev.andreia.dscommerce.repositories.CategoryRepository;
 import dev.andreia.dscommerce.repositories.ProductRepository;
 import dev.andreia.dscommerce.services.exceptions.DatabaseException;
 import dev.andreia.dscommerce.services.exceptions.ResourceNotFoundException;
@@ -21,11 +24,14 @@ public class ProductService {
     @Autowired
     private ProductRepository repository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @Transactional(readOnly = true)
-    public ProductMinDto findById(Long id){
+    public ProductDTO findById(Long id){
         Product product = repository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Recurso não encontrado"));
-        return new ProductMinDto(product);
+        return new ProductDTO(product);
     }
 
     @Transactional(readOnly = true)
@@ -54,11 +60,10 @@ public class ProductService {
         }
     }
 
-    @Transactional(propagation = Propagation.SUPPORTS)
+    //@Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id){
         if(!repository.existsById(id)){
             throw new ResourceNotFoundException("Recurso não encontrado");
-
         }
 
         try{
@@ -74,6 +79,13 @@ public class ProductService {
         entity.setDescription(dto.getDescription());
         entity.setPrice(dto.getPrice());
         entity.setImgUrl(dto.getImgUrl());
+
+        entity.getCategories().clear();
+
+        for(CategoryDto categoryDto : dto.getCategories()){
+            Category category = categoryRepository.getReferenceById(categoryDto.getId());
+            entity.getCategories().add(category);
+        }
     }
 
 }
