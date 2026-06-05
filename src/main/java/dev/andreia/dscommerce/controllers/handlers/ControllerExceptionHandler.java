@@ -3,6 +3,7 @@ package dev.andreia.dscommerce.controllers.handlers;
 import dev.andreia.dscommerce.dto.CustomError;
 import dev.andreia.dscommerce.dto.ValidationError;
 import dev.andreia.dscommerce.services.exceptions.DatabaseException;
+import dev.andreia.dscommerce.services.exceptions.ForbiddenException;
 import dev.andreia.dscommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -36,5 +37,11 @@ public class ControllerExceptionHandler {
             error.addError(f.getField(), f.getDefaultMessage());
         }
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(error);
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<CustomError> forbidden(ForbiddenException ex, HttpServletRequest request){
+        CustomError err = new CustomError(Instant.now(), HttpStatus.FORBIDDEN.value(), ex.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
     }
 }
