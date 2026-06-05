@@ -3,6 +3,7 @@ package dev.andreia.dscommerce.dto;
 import dev.andreia.dscommerce.entities.Order;
 import dev.andreia.dscommerce.entities.OrderItem;
 import dev.andreia.dscommerce.entities.enums.OrderStatus;
+import jakarta.validation.constraints.NotEmpty;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class OrderDto {
     private UserMinDto client;
     private PaymentDto payment;
 
+    @NotEmpty(message = "A lista não pode ser vazia")
     private List<OrderItemDto> items = new ArrayList<>();
 
     public OrderDto() {

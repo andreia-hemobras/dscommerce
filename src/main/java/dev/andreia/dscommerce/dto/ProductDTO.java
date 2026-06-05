@@ -26,7 +26,7 @@ public class ProductDTO {
     private Double price;
     private String imgUrl;
 
-    @NotEmpty
+    @NotEmpty(message = "A lista não pode ser vazia")
     private List<CategoryDto> categories = new ArrayList<>();
 
     public ProductDTO() {

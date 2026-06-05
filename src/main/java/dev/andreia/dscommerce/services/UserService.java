@@ -47,7 +47,7 @@ public class UserService implements UserDetailsService {
         return new UserDto(user);
     }
 
-    private User getLoggedUsed(){
+    public User getLoggedUsed(){
         try{
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             Jwt jwt = (Jwt) authentication.getPrincipal();
